@@ -1,0 +1,79 @@
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".ipynb_checkpoints",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pyenv",
+  ".pytest_cache",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  ".vscode",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "site-packages",
+  "venv",
+  "scripts",
+]
+line-length = 120
+indent-width = 4
+target-version = "py310"
+
+[lint]
+# Select All rules
+select = ["ALL"]
+# Ignore: D - pydocstyle, G - flake8-logging-format ,FA100 - New  style typing
+# ANN - Typing
+ignore = [
+  # Keep
+  "ERA001", "D", "TD", "FIX", "ANN204", "PTH123", "S301",
+
+  # Will Remove
+  "G004", "ANN001", "ANN002", "ANN003", "ANN205",
+  "FBT001", "FBT002", "PLR2004", "S608", "ANN202",
+  "ANN206", "ANN401", "ANN201", "S113",
+  "PLR0913",
+
+]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+# 4. Ignore `E402` (import violations) in all `__init__.py` files
+per-file-ignores = {"__init__.py" = ["E402"], "tests/*" = ["S101", "TID252"]}
+
+[lint.isort]
+known-first-party = ["chatbot"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = true
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"

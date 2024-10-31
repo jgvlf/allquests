@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Code-Verify
 
 # Controls when the workflow will run
@@ -14,16 +12,34 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+
+  code-validation:
+
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v3
-      - uses: pre-commit/action@v3.0.1
+
+      - name: checkout-repo
+        uses: actions/checkout@v4
+
+
+      - name: install-python
+        uses: actions/setup-python@v3
         with:
-          extra-args: -all
+          python-version: '3.10.11'
+
+      - name: install-python-dependencies
+        run: pip install .[dev]
+
+      - name: format
+        run: ruff format
+
+      - name: check
+        run: ruff check
+
+      - name: type
+        run: mypy src/allquests test
+
+      - name: test
+        run: pytest --cov allquests

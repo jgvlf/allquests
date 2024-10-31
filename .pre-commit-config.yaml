@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+        args: [--maxkb=2048]
+  - repo: local
+    hooks:
+      - id: format
+        name: format
+        entry: ruff format
+        language: python
+        types: [python]
+        pass_filenames: false
+        verbose: true
+      - id: check
+        name: check
+        entry: ruff check
+        language: python
+        types: [python]
+        pass_filenames: false
+        verbose: true
+      - id: type
+        name: type
+        entry: mypy src/allquests
+        language: python
+        types: [python]
+        pass_filenames: false
+        verbose: true
+      - id: test
+        name: test
+        entry: pytest --cov allquests
+        language: python
+        types: [python]
+        pass_filenames: false
+        verbose: true

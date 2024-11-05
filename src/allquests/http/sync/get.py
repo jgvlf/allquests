@@ -31,5 +31,5 @@ def get(
         case proxy if not proxy:
             http = client.HTTPSConnection(host=host, port=port)
             http.request(methods.value, endpoint, body, headers)
-            res = proxy_server.getresponse()
+            res = http.getresponse()
     return res

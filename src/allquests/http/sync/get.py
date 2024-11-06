@@ -1,35 +1,26 @@
-from collections.abc import Mapping
 from http import client
 from http.client import HTTPResponse
 
-from allquests.http.methods import Methods
-from allquests.http.proxy import Proxy
+from allquests.http.request_args import RequestArgs
 
 
 def get(
-    methods: Methods,
-    endpoint: str,
-    body: str | None = None,
-    headers: Mapping[str, str] = {},
-    *,
-    host: str,
-    port: int | None = None,
-    proxy: Proxy | None,
+    params: RequestArgs,
 ) -> HTTPResponse:
     res: HTTPResponse
-    match proxy:
-        case proxy if proxy:
-            proxy_server = client.HTTPSConnection(host=proxy.HOST, port=proxy.PORT)
-            proxy_server.set_tunnel(host=host, port=port)
+    match params.proxy:
+        case params.proxy if params.proxy:
+            proxy_server = client.HTTPSConnection(host=params.proxy.HOST, port=params.proxy.PORT)
+            proxy_server.set_tunnel(host=params.host, port=params.port)
             proxy_server.request(
-                methods.value,
-                endpoint,
-                body,
+                params.methods.value,
+                params.endpoint,
+                params.body,
                 headers={},
             )
             res = proxy_server.getresponse()
         case proxy if not proxy:
-            http = client.HTTPSConnection(host=host, port=port)
-            http.request(methods.value, endpoint, body, headers)
+            http = client.HTTPSConnection(host=params.host, port=params.port)
+            http.request(params.methods.value, params.endpoint, params.body, params.headers)
             res = http.getresponse()
     return res
